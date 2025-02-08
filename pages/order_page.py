@@ -3,11 +3,10 @@ from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 from selenium.webdriver.support.wait import WebDriverWait
 from lacators.order_page_locators import OrderPageLocators
+from pages.base_page import BasePage
 
 
-class OrderPage:
-    def __init__(self, driver):
-        self.driver = driver
+class OrderPage(BasePage):
 
     @allure.step("Заполнение формы заказа")
     def fill_order_form(self, name=None, surname=None, adress=None, phone=None, metro_station=None, start_date=None):
@@ -51,24 +50,23 @@ class OrderPage:
     @allure.step("Выбор цвета самоката")
     def select_color(self):
         """Выбор чекбокса 'чёрный жемчуг'"""
-        self.driver.find_element(*OrderPageLocators.CHECKBOX_BLACK).click()
+        self.obj_click(OrderPageLocators.CHECKBOX_BLACK)
 
     @allure.step("Нажатие на кнопку 'Далее'")
     def next_button_click(self):
         """Переход на следующий шаг оформления заказа"""
-        self.driver.find_element(*OrderPageLocators.NEXT_BUTTON).click()
+        self.obj_click(OrderPageLocators.NEXT_BUTTON)
 
     @allure.step("Подтверждение выбора даты")
     def confirm_data_click(self):
         """Подтверждаем выбранную дату аренды"""
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(OrderPageLocators.DATE_IN_CALENDAR)
-        ).click()
+        self.obj_click(OrderPageLocators.DATE_IN_CALENDAR)
+
 
     @allure.step("Выбор срока аренды")
     def rent_time_fill_up(self):
         """Выбираем срок аренды в выпадающем списке"""
-        self.driver.find_element(*OrderPageLocators.RENT_TIME_DROPDOWN).click()
+        self.obj_click(OrderPageLocators.RENT_TIME_DROPDOWN)
         options = WebDriverWait(self.driver, 10).until(
             EC.presence_of_all_elements_located(OrderPageLocators.RENT_TIME_DROPDOWN_OPTIONS)
         )
@@ -81,13 +79,12 @@ class OrderPage:
     @allure.step("Клик по кнопке 'Заказать'")
     def order_button_click(self):
         """Нажимаем на кнопку 'Заказать'"""
-        self.driver.find_element(*OrderPageLocators.ORDER_LABEL).click()
+        self.obj_click(OrderPageLocators.ORDER_LABEL)
 
     @allure.step("Подтверждение заказа")
     def confirm_order_button_click(self):
         """Подтверждаем оформление заказа"""
-        self.driver.find_element(*OrderPageLocators.CONFIRM_ORDER_BUTTON).click()
-
+        self.obj_click(OrderPageLocators.CONFIRM_ORDER_BUTTON)
 
     @allure.step("Проверка статуса заказа")
     def check_order_status(self):
